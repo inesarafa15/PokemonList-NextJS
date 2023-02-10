@@ -1,28 +1,19 @@
 "use client"
-import { useRouter } from "next/router";
 import React from 'react'
-import { useEffect , useState } from 'react'
 import Link from 'next/link'
 import styles from '../../styles/details.module.css'
- export default function Details(){
-   
-    const {
-        query:{id},
-    }=useRouter();
-    const [Pokemon,setPokemon]=useState(null);
-    useEffect(()=>{
-  async function getPokemon(){
-    const resp= await fetch (`https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${id}.json`);
-  setPokemon(await resp.json());
-  }
-  if (id){
-   getPokemon();
-  }
-   },[id])
-   if (!Pokemon){
-    return null ; 
-   }
-    return <div> 
+
+export async function getServerSideProps({params}){
+  const resp= await fetch (`https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params.id}.json`);
+   return {
+   props : {
+    Pokemon: await resp.json(),
+   },
+  };
+ }
+ export default function Details({Pokemon}){
+
+  return <div> 
  
     <title>
       {Pokemon.name}
