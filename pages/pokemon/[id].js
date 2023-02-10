@@ -9,7 +9,7 @@ export async function getStaticProps({params}){
    props : {
     Pokemon: await resp.json(),
    },
-   revalidate: 30,
+   //revalidate: 30,
   };
  }
  export async function getStaticPaths(){
